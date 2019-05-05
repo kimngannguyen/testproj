@@ -51,63 +51,143 @@ public class CS4200_P3
 		
 	}
 
-	public static boolean isValidMove (String potentialMove) 
+	public static boolean isValidComputerMove (String potentialMove) 
 	{
-		System.out.println("Used square: " + usedSquares);
-
 		for (String path : usedSquares)
 		{
-			// if you're trying to move to a square on the same horizontal as a #
+
+			// COMPUTER HORIZONTAL
 			if (path.charAt(0) == potentialMove.charAt(0)) 
 			{
-				//WORKS
 				// check to see if you're jumping west over a #
-				System.out.println("path:" + path.charAt(0));
 				if (potentialMove.charAt(1) - currentComputerPosition.charAt(1) < 0)
 				{
-					// potential is less than curr
 					int curr=Integer.parseInt(String.valueOf(currentComputerPosition.charAt(1))); 
 					int potential=Integer.parseInt(String.valueOf(potentialMove.charAt(1))); 
 					int row = getNumericValue(path.charAt(0)); 
-					for(int i = potential; i <= curr; i++) {
-						if (isoBoard[row][i] == '#')
+					for(int i = potential; i < curr; i++) {
+						if (isoBoard[row][i] != '-') {
+							System.out.println("Computer west not valid");
 							return false;
+						}
 					}
-
+				// check to see if you're jumping east over a #
 				} else if (potentialMove.charAt(1) - currentComputerPosition.charAt(1) > 0){ 
-					// check to see if you're jumping east over a #
-
-					//potential is greater than curr
 					int curr=Integer.parseInt(String.valueOf(currentComputerPosition.charAt(1))); 
 					int potential=Integer.parseInt(String.valueOf(potentialMove.charAt(1))); 
 					int row = getNumericValue(path.charAt(0)); 
-					for(int i = curr; i <= potential; i++) {
-						if (isoBoard[row][i] == '#')
+					for(int i = curr; i < potential; i++) {
+						if (isoBoard[row][i] != '-') {
+							System.out.println("Computer east not valid");
 							return false;
+						}
 					}
+					
 				}
-
 			}
 
-			// if you're trying to move to a square in the same vertical as a #
-			// if (path.charAt(1) == potentialMove.charAt(1)) 
-			// {
-			// 	if (potentialMove.charAt(0) - currentComputerPosition.charAt(0) < 0)
-			// 	{
-			// 		// check to see if you're jumping north over a #
-			// 		if ((potentialMove.charAt(0) < currentComputerPosition.charAt(0) && potentialMove.charAt(0) < path.charAt(0)) || (potentialMove.charAt(0) < currentOpponentPosition.charAt(0) && potentialMove.charAt(0) < path.charAt(0))) 
-			// 		{
-			// 			return false;
-			// 		}
-			// 	}
-			// 	// check to see if you're jumping south over a #
-			// 	else if ((potentialMove.charAt(0) > currentComputerPosition.charAt(0) && potentialMove.charAt(0) > path.charAt(0)) || (potentialMove.charAt(0) > currentOpponentPosition.charAt(0) && potentialMove.charAt(0) > path.charAt(0))) 
-			// 	{
-			// 		return false;
-			// 	}
-			// }
+			// COMPUTER VERTICAL
+			if (path.charAt(1) == potentialMove.charAt(1)) 
+			{
+				// check to see if you're jumping north over a #
+				if (potentialMove.charAt(0) - currentComputerPosition.charAt(0) < 0)
+				{
+					int curr = getNumericValue(currentComputerPosition.charAt(0)); 
+					int potential = getNumericValue(potentialMove.charAt(0)); 
+					int col = Integer.parseInt(String.valueOf(currentComputerPosition.charAt(1))); 
+					for(int i = potential; i < curr; i++) {
+						if (isoBoard[i][col] != '-') {
+							System.out.println("Computer north not valid");
+							return false;
+						}
+					}
+				}
+				// check to see if you're jumping south over a #
+				if (potentialMove.charAt(0) - currentComputerPosition.charAt(0) > 0)
+				{
+					int curr = getNumericValue(currentComputerPosition.charAt(0)); 
+					int potential = getNumericValue(potentialMove.charAt(0)); 
+					int col = Integer.parseInt(String.valueOf(currentComputerPosition.charAt(1))); 
+					for(int i = curr; i < potential; i++) {
+						if (isoBoard[i][col] != '-') {
+							System.out.println("Computer south not valid");
+							return false;
+						}
+					}
+					
+				}
+			}
 		}
+		return true;
+	}
 
+	public static boolean isValidOpponentMove (String potentialMove) 
+	{
+		for (String path : usedSquares)
+		{
+			// OPPONENT HORIZONTAL 
+			if (path.charAt(0) == potentialMove.charAt(0)) 
+			{
+				// check to see if you're jumping west over a #
+				if (potentialMove.charAt(1) - currentOpponentPosition.charAt(1) < 0)
+				{
+					int curr=Integer.parseInt(String.valueOf(currentOpponentPosition.charAt(1))); 
+					int potential=Integer.parseInt(String.valueOf(potentialMove.charAt(1))); 
+					int row = getNumericValue(path.charAt(0)); 
+					for(int i = potential; i < curr; i++) {
+						if (isoBoard[row][i] != '-') {
+							System.out.println("Opponent west not valid");
+							return false;
+						}
+					}
+
+				} else if (potentialMove.charAt(1) - currentOpponentPosition.charAt(1) > 0){ 
+					// check to see if you're jumping east over a #
+					int curr=Integer.parseInt(String.valueOf(currentOpponentPosition.charAt(1))); 
+					int potential=Integer.parseInt(String.valueOf(potentialMove.charAt(1))); 
+					int row = getNumericValue(path.charAt(0)); 
+					for(int i = curr; i < potential; i++) {
+						if (isoBoard[row][i] != '-') {
+							System.out.println("Opponent east not valid");
+							return false;
+						}
+					}
+					
+				}
+			}
+
+			// OPPONENT VERTICAL
+			if (path.charAt(1) == potentialMove.charAt(1)) 
+			{
+				// check to see if you're jumping north over a #
+				if (potentialMove.charAt(0) - currentOpponentPosition.charAt(0) < 0)
+				{
+					int curr = getNumericValue(currentOpponentPosition.charAt(0)); 
+					int potential = getNumericValue(potentialMove.charAt(0)); 
+					int col = Integer.parseInt(String.valueOf(currentOpponentPosition.charAt(1))); 
+					for(int i = potential; i < curr; i++) {
+						if (isoBoard[i][col] != '-') {
+							System.out.println("Opponent north not valid");
+							return false;
+						}
+					}
+					
+				}
+				// check to see if you're jumping south over a #
+				if (potentialMove.charAt(0) - currentOpponentPosition.charAt(0) > 0)
+				{
+					int curr = getNumericValue(currentOpponentPosition.charAt(0)); 
+					int potential = getNumericValue(potentialMove.charAt(0)); 
+					int col = Integer.parseInt(String.valueOf(currentOpponentPosition.charAt(1))); 
+					for(int i = curr; i < potential; i++) {
+						if (isoBoard[i][col] != '-') {
+							System.out.println("Opponent south not valid");
+							return false;
+						}
+					}
+				}
+			}
+		}
 		return true;
 	}
 
@@ -117,30 +197,28 @@ public class CS4200_P3
 		System.out.println("\nEnter opponent's move: ");
 		sc = new Scanner(System.in);
 		String oMove = sc.nextLine();
+		boolean valid = isValidOpponentMove(oMove);
 
 		while (searchInArray(oMove)) 
 		{
-			System.out.println("Error, that move has already been made. Choose again.");
-			System.out.println("\nEnter opponent's move: ");
-			sc = new Scanner(System.in);
-			oMove = sc.nextLine();
+			System.out.println("\nError, that move has already been made. Choose again.");
+			inputOpponent();
 		}
 
-		while (isValidMove(oMove) == false) 
+		if (valid == false) 
 		{
-			System.out.println("Error, that is not a valid Queen move. Try again.");
-			System.out.println(usedSquares);
-			System.out.println("Error, that move has already been made. Choose again.");
-			System.out.println("\nEnter opponent's move: ");
-			sc = new Scanner(System.in);
-			oMove = sc.nextLine();
+			System.out.println("\nError, that is not a valid Queen move. Try again.");
+			//System.out.println(usedSquares);
+			inputOpponent();
+		} else {
+			opponentMoves.add(oMove);
+			currentOpponentPosition = oMove;
+			updatePrevBoard(opponentMoves.get(opponentMoves.size()-2).charAt(0), opponentMoves.get(opponentMoves.size()-2).charAt(1));
+			updateCurrentOpponentBoard(currentOpponentPosition.charAt(0),currentOpponentPosition.charAt(1));
+			printBoard();
 		}
 
-		opponentMoves.add(oMove);
-		currentOpponentPosition = oMove;
-		updatePrevBoard(opponentMoves.get(opponentMoves.size()-2).charAt(0), opponentMoves.get(opponentMoves.size()-2).charAt(1));
-		updateCurrentOpponentBoard(oMove.charAt(0),oMove.charAt(1));
-		printBoard();
+		
 	}
 
 	public static void inputComputer() 
@@ -149,26 +227,28 @@ public class CS4200_P3
 		System.out.println("\nEnter computer's move: ");
 		sc = new Scanner(System.in);
 		String cMove = sc.next();
-		boolean valid = isValidMove(cMove);
+		boolean valid = isValidComputerMove(cMove);
 		
 		while (searchInArray(cMove)) 
 		{
-			System.out.println("Error, that move has already been made. Choose again.");
+			System.out.println("\nError, that move has already been made. Choose again.");
 			inputComputer();
 		}
 
-		while (valid == false) 
+		if (valid == false) 
 		{
-			System.out.println("Error, that is not a valid Queen move. Try again.");
-			System.out.println(usedSquares);
+			System.out.println("\nError, that is not a valid Queen move. Try again.");
+			//System.out.println(usedSquares);
 			inputComputer();
+		} else {
+			computerMoves.add(cMove);
+			currentComputerPosition = cMove;
+			updatePrevBoard(computerMoves.get(computerMoves.size()-2).charAt(0), computerMoves.get(computerMoves.size()-2).charAt(1));
+			updateCurrentComputerBoard(currentComputerPosition.charAt(0),currentComputerPosition.charAt(1));
+			printBoard();
 		}
 
-		computerMoves.add(cMove);
-		currentComputerPosition = cMove;
-		updatePrevBoard(computerMoves.get(computerMoves.size()-2).charAt(0), computerMoves.get(computerMoves.size()-2).charAt(1));
-		updateCurrentComputerBoard(cMove.charAt(0),cMove.charAt(1));
-		printBoard();
+		
 	}
 
 	public static char[][] createBoard() 
